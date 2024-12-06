@@ -20,105 +20,145 @@ StockMovementPrediction_repo/
 │   └── processed/        # Processed data ready for analysis
 └── README.md             # Project documentation
 
-To run the project, follow these steps:
+# HOW TO RUN PROJECT
+To run your **Stock Movement Prediction** project with Twitter API data scraping (using a **bearer token**), here’s a step-by-step guide on how to proceed:
 
-### **1. Clone the Repository**
+---
 
-First, clone the repository to your local machine (if you haven’t done so already):
+### **1. Setup Twitter API Access**
+Before running the project, you need to set up your Twitter Developer credentials.
 
-```bash
-git clone https://github.com/<your-username>/StockMovementPrediction.git
-cd StockMovementPrediction
-```
+#### Steps to Get Twitter API Access:
+1. Go to [Twitter Developer Portal](https://developer.twitter.com/).
+2. Create a new **Twitter Developer App** and obtain:
+   - **Bearer Token** (used for authentication in your scraping script).
+3. Store the **Bearer Token** securely.
 
-### **2. Set Up the Environment**
+---
 
-It’s recommended to use a virtual environment for managing dependencies:
-
-#### **Create a Virtual Environment**
-```bash
-python -m venv venv
-```
-
-#### **Activate the Virtual Environment**
-- **On Windows**:
-  ```bash
-  venv\Scripts\activate
-  ```
-
-- **On Mac/Linux**:
-  ```bash
-  source venv/bin/activate
-  ```
-
-#### **Install Dependencies**
-Once the virtual environment is activated, install the required dependencies by running:
+### **2. Install Required Dependencies**
+Make sure you have the necessary dependencies installed, especially for Twitter scraping. You can install them by running:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### **3. Run the Scraping Script**
-
-Navigate to the `scraper/` directory and run the scraping script to collect data from the chosen social media platform (Twitter, Reddit, or Telegram). Replace `<scraping_script.py>` with the actual script name.
-
-```bash
-python scraper/<scraping_script.py>
+Your `requirements.txt` should include dependencies like:
+```txt
+tweepy
+pandas
+numpy
+scikit-learn
+tensorflow
+beautifulsoup4
+matplotlib
+seaborn
 ```
-
-This script will fetch the necessary data and save it in the `data/raw/` directory.
-
-### **4. Preprocess and Extract Features**
-
-Once the raw data is collected, go to the `model/` directory and run the preprocessing script to clean and extract relevant features from the raw data:
-
-```bash
-python model/<preprocessing_script.py>
-```
-
-This will process the raw data and store the cleaned data in the `data/processed/` directory.
-
-### **5. Train and Evaluate the Model**
-
-After preprocessing, you can train the model. Run the model training script from the `model/` directory:
-
-```bash
-python model/<training_script.py>
-```
-
-This will train the machine learning model and evaluate its performance. The results will be stored and displayed based on the evaluation metrics defined in the script.
-
-### **6. Visualize and Demonstrate with Notebooks**
-
-You can explore the entire process, from data scraping to model evaluation, in the Jupyter notebooks located in the `notebooks/` folder.
-
-- Start Jupyter Notebook by running:
-  ```bash
-  jupyter notebook
-  ```
-
-- Open the notebooks to see demonstrations and visualizations of the data scraping, preprocessing, and model evaluation steps.
-
-### **7. Run Evaluation Metrics**
-
-After training, you can evaluate the model’s performance. Check for the metrics like accuracy, precision, and recall printed in the training script or use additional evaluation scripts if available.
 
 ---
 
-### **Optional: Running the Entire Pipeline**
-You can also create a script to run the entire pipeline from scraping to model evaluation:
+### **3. Configuration of Bearer Token**
+To use the Twitter API, the **bearer token** must be added to your scraping script.
 
-```bash
-python scraper/<scraping_script.py>
-python model/<preprocessing_script.py>
-python model/<training_script.py>
+#### Example:
+If your scraping script uses the **Tweepy** library, you should authenticate it using the bearer token.
+
+```python
+import tweepy
+
+# Set your Twitter API Bearer Token
+bearer_token = "YOUR_TWITTER_BEARER_TOKEN"
+
+# Authenticate to Twitter
+client = tweepy.Client(bearer_token=bearer_token)
+
+# Example: Scrape tweets related to stock movements
+query = "stock market"
+tweets = client.search_recent_tweets(query=query, max_results=100)
+
+# Display the scraped tweets
+for tweet in tweets.data:
+    print(f"{tweet.text}")
 ```
 
-This will run everything in sequence.
+Replace `"YOUR_TWITTER_BEARER_TOKEN"` with your actual bearer token.
 
 ---
 
-### **Final Notes**
-- Ensure that you have set up the necessary credentials (API keys for Twitter, Reddit, etc.) if required.
-- If running into issues with dependencies, check that all libraries are correctly installed.
-- Refer to the notebooks for further understanding of each step.
+### **4. Running the Scraper**
+After configuring the API and dependencies, follow these steps:
+
+#### **4.1 Run the Scraping Script**
+1. Navigate to the `scraper/` directory:
+   ```bash
+   cd scraper/
+   ```
+
+2. Run your scraping script (replace `<scraping_script.py>` with the actual script file name):
+   ```bash
+   python <scraping_script.py>
+   ```
+
+   The script will use the Twitter API to scrape tweets related to stock movements and save them as raw data.
+
+---
+
+### **5. Preprocessing Data**
+Once you have the scraped data (usually in `.csv`, `.json`, or `.txt` format), you’ll need to preprocess it. 
+
+#### **5.1 Run the Preprocessing Script**
+Navigate to the `model/` directory and run the preprocessing script:
+```bash
+cd model/
+python preprocess_data.py
+```
+
+This script will clean the data and extract useful features for training the model.
+
+---
+
+### **6. Model Training**
+After preprocessing, the data is ready to be used for training the model.
+
+#### **6.1 Run the Model Training Script**
+Navigate to the `model/` directory and run the model training script:
+```bash
+python train_model.py
+```
+
+This will train the machine learning model to predict stock movements based on the sentiment or other features extracted from the scraped data.
+
+---
+
+### **7. Evaluation**
+Once the model is trained, you can evaluate it using various metrics such as accuracy, precision, and recall.
+
+#### **7.1 Run the Model Evaluation Script**
+If you have an evaluation script:
+```bash
+python evaluate_model.py
+```
+
+This will evaluate the model’s performance on the test data.
+
+---
+
+### **8. Jupyter Notebooks**
+For easier visualization and understanding, you can run Jupyter notebooks that demonstrate each of the above steps (scraping, preprocessing, training, and evaluation).
+
+#### **8.1 Run Jupyter Notebooks**
+To launch Jupyter Notebooks, navigate to the `notebooks/` directory and run:
+
+```bash
+jupyter notebook
+```
+
+This will open a Jupyter notebook interface in your browser. You can open and run the notebooks to see the data scraping, preprocessing, training, and evaluation steps.
+
+---
+
+### **9. Final Thoughts**
+- Make sure you replace placeholder values (like API keys, bearer tokens) with your actual credentials.
+- Follow the steps in the order (scraping → preprocessing → model training → evaluation).
+
+Let me know if you need further details on any step or encounter any issues while running the project!
