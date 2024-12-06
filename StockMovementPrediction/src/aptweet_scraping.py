@@ -3,7 +3,7 @@ import pandas as pd
 import time
 
 # Your Twitter API V2 credentials
-bearer_token = 'AAAAAAAAAAAAAAAAAAAAADSPxQEAAAAAeFzr66XIehSUXzXOofNgK7XjIpQ%3DyDXbvL6E60vqA7SU5CN3fdjHbvsJjfSubf3zUMjeE24yL3oKhz'
+bearer_token = 'YOUR_BEARE_TOKEN'
 
 # Initialize Tweepy client for API V2
 client = tweepy.Client(bearer_token=bearer_token)
